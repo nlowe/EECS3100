@@ -3,6 +3,14 @@
 Projects and code samples for EECS 3100 - Microsystems Design for the Fall 2017 Semester
 at the University of Toledo
 
+## Building
+
+Each project comes with a `Makefile`. To assemble, link, and create a flashable image for each project,
+simply invoke `make` in the project's directory. Invoking `make clean` should clean things up.
+
+The `shared` folder contains parts shared across all projects such as startup boiler plate and the linker
+script for the device we use in the lab. To link for a different device, alter `shared/device.ld`.
+
 ## License
 
 All projects and code is licensed under the MIT License unless otherwise specified
