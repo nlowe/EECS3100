@@ -2,8 +2,8 @@ AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 
-ASFLAGS  = -g -mcpu=cortex-m3 -mthumb
-LDFLAGS  = -T ../shared/device.ld -o $(PROJECT).elf
+ASFLAGS  = -g -mcpu=cortex-m3 -mthumb --fatal-warnings
+LDFLAGS  = -T ../shared/device.ld --fatal-warnings --no-undefined --error-unresolved-symbols --require-defined _main -o $(PROJECT).elf
 OBJFLAGS = -O ihex -R .eeprom
 
 PROJECT = TestProject
@@ -14,7 +14,7 @@ OBJECTS := $(patsubst src/%.S, %.o, $(SOURCES))
 
 default: all
 
-%.o: src/%.S
+%.o: $(SOURCES)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 assemble_boot:
