@@ -3,7 +3,7 @@ LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 
 ASFLAGS  = -g -mcpu=cortex-m3 -mthumb --fatal-warnings
-LDFLAGS  = -T ../shared/device.ld --fatal-warnings --no-undefined --error-unresolved-symbols --require-defined _main -o $(PROJECT).elf
+LDFLAGS  = -T ../shared/device.ld --fatal-warnings --no-undefined --error-unresolved-symbols -o $(PROJECT).elf
 OBJFLAGS = -O ihex -R .eeprom
 
 PROJECT = TestProject
