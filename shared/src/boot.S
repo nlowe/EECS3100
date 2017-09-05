@@ -1,19 +1,23 @@
-// Startup code for the Teensy 3.1
-// See http://disconnected.systems/blog/bare-metal-assembly-on-the-teensy-3.1/
-// TODO: Alter to match whatever device we will be using in lab
+// Startup code for STM32F207ZG
     .syntax unified
 
     .section ".vectors"
-    // Interrupt vector definitions - page 63
-    .long _estack  //  0 ARM: Initial Stack Pointer
-    .long _startup //  1 ARM: Initial Program Counter
-    .long _halt    //  2 ARM: Non-maskable Interrupt (NMI)
-    .long _halt    //  3 ARM: Hard Fault
-    .long _halt    //  4 ARM: MemManage Fault
-    .long _halt    //  5 ARM: Bus Fault
-    .long _halt    //  6 ARM: Usage Fault
+// Interrupt vector definitions - See table 20 on page 163 of the Reference Manual
+    .word _topOfStack //   Reserved (Top of Stack)
+    .word _startup    //   Reset Vector
+    .word _halt       //   NMI
+    .word _halt       //   Hard Fault
+    .word _halt       //   Memory Management
+    .word _halt       //   Bus Fault
+    .word _halt       //   Usage Fault
+    .word _halt       //   Reserved
+    .word _halt       //   System Service via SWI
+    .word _halt       //   Debug Monitor
+    .word _halt       //   Reserved
+    .word _halt       //   Pending System Service
+    .word _halt       //   System Tick Timer
 
-    .section ".startup","x",%progbits
+    .section ".startup","x"
     .thumb_func
     .global _startup
 _startup:
@@ -31,5 +35,7 @@ _startup:
     eor r12, r12 
     b   _main
 
+    .thumb_func
+    .global _halt
 _halt: b _halt
     .end

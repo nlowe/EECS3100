@@ -7,7 +7,7 @@ OBJECTS := $(patsubst src/%.S, %.o, $(SOURCES))
 include ../shared/Makefile
 
 # Yo make, these are targets, not files / folders
-.PHONY: default link objdump all clean
+.PHONY: default link objdump all clean debug
 
 # Make the 'all' target by default
 default: all
@@ -26,6 +26,10 @@ objdump: link
 
 # To make 'everything', just invoke the 'objdump' target
 all: objdump
+
+# Launch QEMU and wait for GDB to attach
+debug: link
+	../qemu_stm32/arm-softmmu/qemu-system-arm -M stm32-p205 -s -S -kernel $(PROJECT).elf
 
 # Don't forget to clean the bootloader when cleaning
 clean: clean-bootloader

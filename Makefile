@@ -2,7 +2,7 @@
 PROJECTS := TestProject
 PROJECTS_CLEAN := $(PROJECTS:%=clean-%)
 
-.PHONY: all clean $(PROJECTS) $(PROJECTS_CLEAN)
+.PHONY: all clean $(PROJECTS) $(PROJECTS_CLEAN) qemu clean-qemu
 
 # For each project, just invoke make recursively
 $(PROJECTS):
@@ -17,6 +17,13 @@ all: $(PROJECTS)
 
 # Clean all projects
 clean: $(PROJECTS_CLEAN)
+
+clean-qemu:
+	$(MAKE) -C qemu_stm32 clean
+
+qemu:
+	cd qemu_stm32 && ./configure --disable-docs --disable-werror --enable-debug --target-list="arm-softmmu" --python=$(shell which python2)
+	$(MAKE) -C qemu_stm32 -j
 
 # No really, the default goal is 'all' please
 .DEFAULT_GOAL := all
