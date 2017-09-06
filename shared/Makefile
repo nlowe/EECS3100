@@ -21,6 +21,9 @@ OBJFLAGS := -O ihex -R .eeprom $(PROJECT).elf $(PROJECT).bin
 # Yo make, these are targets, not files / folders
 .PHONY: bootloader clean-bootloader
 
+# I don't know why I need this
+.PHONY: Makefile Makefile.o ../shared/Makefile
+
 # Assemble the bootloader
 bootloader:
 	$(AS) $(ASFLAGS) -o $(__SELF)boot.o $(__SELF)src/boot.S
