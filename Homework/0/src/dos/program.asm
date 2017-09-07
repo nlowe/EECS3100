@@ -8,7 +8,7 @@ include ..\..\..\..\shared\pcmac.inc
 .stack 100h     ; Stack area - 256 bytes
 
 .data
-var_x    DW  43
+var_x    DW  42
 
 .code
 Hello   PROC
@@ -43,14 +43,14 @@ _PARITY_Q:
     or   dx, 2
 _P_1:
     test dx, 1
-    jns  _P_1_0
+    jz  _P_1_0
     mov  di, cx
     jmp  _P_2
 _P_1_0:
     xor  di, di
 _P_2:
     test dx, 2
-    jns  _P_2_0
+    jz  _P_2_0
     mov  si, bx
     jmp  _halt
 _P_2_0:
