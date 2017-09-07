@@ -1,5 +1,5 @@
 // Startup code for STM32F207ZG
-    .syntax unified
+    .syntax divided
 
     .section ".vectors"
 // Interrupt vector definitions - See table 20 on page 163 of the Reference Manual
@@ -29,10 +29,6 @@ _startup:
     eor r5, r5
     eor r6, r6
     eor r7, r7
-    eor r8, r8
-    eor r9, r9
-    eor r10, r10
-    eor r12, r12 
     bl  _main    // Go do the thing. Main should either return to us or branch directly to _halt
     b   _halt
 
