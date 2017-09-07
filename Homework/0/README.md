@@ -55,5 +55,6 @@ arm-none-eabi-objcopy -O ihex -R .eeprom TestProject.elf TestProject.bin
 Use `dos.ps1` to build the `x86` component:
 
 ```powershell
-./dos.ps1
+. ../dos.ps1
+Build-Project -ProjectPath src/dos
 ```

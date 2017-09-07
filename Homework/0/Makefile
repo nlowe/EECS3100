@@ -1,7 +1,7 @@
 # Define the project (final binary name), sources, and intermediate objects
 PROJECT := hw0
-SOURCES := $(wildcard src/*.S)
-OBJECTS := $(patsubst src/%.S, %.o, $(SOURCES))
+SOURCES := $(wildcard src/arm/*.S)
+OBJECTS := $(patsubst src/arm/%.S, %.o, $(SOURCES))
 
 # Shared definitions must be included AFTER the project name has been defined
 include ../../shared/Makefile

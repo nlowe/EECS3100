@@ -3,3 +3,11 @@
 *.bin
 .vscode/
 .gdb*
+*.map
+*.exe
+*.obj
+*.coff
+*.out
+*.err
+*.CV4
+*.STS
