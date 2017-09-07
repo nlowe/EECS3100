@@ -1,5 +1,5 @@
 # A list of projects to build
-PROJECTS := TestProject
+PROJECTS := TestProject Homework/0
 PROJECTS_CLEAN := $(PROJECTS:%=clean-%)
 
 .PHONY: all clean $(PROJECTS) $(PROJECTS_CLEAN) qemu clean-qemu

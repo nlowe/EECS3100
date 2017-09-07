@@ -33,7 +33,8 @@ _startup:
     eor r9, r9
     eor r10, r10
     eor r12, r12 
-    b   _main
+    bl  _main    // Go do the thing. Main should either return to us or branch directly to _halt
+    b   _halt
 
     .thumb_func
     .global _halt

@@ -15,14 +15,14 @@ OBJCOPY := arm-none-eabi-objcopy
 
 # Default flags for tools
 ASFLAGS  := -g -mcpu=cortex-m3 -mthumb --fatal-warnings
-LDFLAGS  := -T ../shared/device.ld --fatal-warnings --no-undefined --error-unresolved-symbols -o $(PROJECT).elf $(__SELF)boot.o
+LDFLAGS  := -T $(__SELF)device.ld --fatal-warnings --no-undefined --error-unresolved-symbols -o $(PROJECT).elf $(__SELF)boot.o
 OBJFLAGS := -O ihex -R .eeprom $(PROJECT).elf $(PROJECT).bin
 
 # Yo make, these are targets, not files / folders
 .PHONY: bootloader clean-bootloader
 
 # I don't know why I need this
-.PHONY: Makefile Makefile.o ../shared/Makefile
+.PHONY: Makefile Makefile.o ../shared/Makefile ../../shared/Makefile
 
 # Assemble the bootloader
 bootloader:
