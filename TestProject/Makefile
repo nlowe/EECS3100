@@ -27,9 +27,13 @@ objdump: link
 # To make 'everything', just invoke the 'objdump' target
 all: objdump
 
-# Launch QEMU and wait for GDB to attach
+# Launch the debugger which starts the emulator, connects to it, sets a breakpoint on _main, and continues execution
 debug: link
-	../qemu_stm32/arm-softmmu/qemu-system-arm -M stm32-p205 -s -S -kernel $(PROJECT).elf
+	arm-none-eabi-gdb $(PROJECT).elf -ex '!../../qemu_stm32/arm-softmmu/qemu-system-arm -M stm32-p205 -s -S -kernel $(PROJECT).elf > /dev/null 2>&1 &' -ex 'target remote :1234' -ex 'b _main' -ex c
+
+# Launch QEMU and wait for GDB to attach
+sim: link
+	../../qemu_stm32/arm-softmmu/qemu-system-arm -M stm32-p205 -s -S -kernel $(PROJECT).elf
 
 # Don't forget to clean the bootloader when cleaning
 clean: clean-bootloader
