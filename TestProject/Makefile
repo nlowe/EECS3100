@@ -14,7 +14,7 @@ default: all
 
 # Assemble intermediate objects
 %.o: $(SOURCES)
-	$(AS) $(ASFLAGS) -o $@ $<
+	$(call assemble,$<,$@)
 
 # Link the objects with the bootloader
 link: bootloader $(OBJECTS)
@@ -37,4 +37,4 @@ sim: link
 
 # Don't forget to clean the bootloader when cleaning
 clean: clean-bootloader
-	rm -f *.o *.elf *.bin
+	rm -f *.o *._s *.elf *.bin

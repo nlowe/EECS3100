@@ -1,6 +1,10 @@
+#ifdef __GNU_AS__
     .syntax divided
     .thumb_func
     .global _main
+#else
+    PUBLIC _main
+#endif
 _main:
     ldr r1, =var_x  
     ldr r1, [r1] // Load initial argument.
@@ -82,5 +86,7 @@ _FUNC_CHECK_PARITY:
     pop  {r1}
     mov  pc, lr // return 1 if r0 originally had even parity otherwise 0
 
+#ifdef __GNU_AS__
         .data
+#endif
 var_x:  .word   42
