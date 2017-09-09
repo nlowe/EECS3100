@@ -1,4 +1,5 @@
 // Startup code for STM32F207ZG
+#ifdef __GNU_AS__
     .syntax divided
 
     .section ".vectors"
@@ -20,19 +21,35 @@
     .section ".startup","x"
     .thumb_func
     .global _startup
+#else
+    // TODO: startup code compatible with IAR
+
+    PUBLIC _startup
+#endif
 _startup:
-    eor r0, r0
-    eor r1, r1
-    eor r2, r2
-    eor r3, r3
-    eor r4, r4
-    eor r5, r5
-    eor r6, r6
-    eor r7, r7
+    eor r0, r0, r0
+    eor r1, r1, r1
+    eor r2, r2, r2
+    eor r3, r3, r3
+    eor r4, r4, r4
+    eor r5, r5, r5
+    eor r6, r6, r6
+    eor r7, r7, r7
+
+    // TODO: Copy / relocate data segment(s) to ram from rom
+
     bl  _main    // Go do the thing. Main should either return to us or branch directly to _halt
     b   _halt
 
+#if __GNU_AS__
     .thumb_func
     .global _halt
+#else
+    PUBLIC _halt
+#endif
 _halt: b _halt
+#if __GNU_AS__
     .end
+#else
+    END
+#endif
