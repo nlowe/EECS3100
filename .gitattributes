@@ -1,0 +1,5 @@
+*.dep	text	eol=crlf
+*.ewd	text	eol=crlf
+*.ewp   text    eol=crlf
+*.ewt   text    eol=crlf
+*.eww   text    eol=crlf

@@ -5,67 +5,63 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Debug\Obj\ModifiedFib_CPP.pbd</file>
-            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_nc.a</file>
-            <file>$TOOLKIT_DIR$\inc\cpp\cstdint</file>
             <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_ne.a</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
             <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$TOOLKIT_DIR$\inc\cpp\cstdint</file>
+            <file>$PROJ_DIR$\Debug\Obj\ModifiedFib_CPP.pbd</file>
+            <file>$PROJ_DIR$\main.cpp</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_nc.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
             <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
             <file>$PROJ_DIR$\Debug\Exe\cpp.out</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\main.cpp</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\cstdint</file>
-            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 15</file>
+                    <file> 17</file>
                 </tool>
             </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\cpp.out</name>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 12 14 3 1 21 9</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\main.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 13</file>
+                    <file> 2</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 10</file>
+                    <file> 14</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 2 4 7 11 6 19 17</file>
+                    <file> 3 7 11 6 13 1 8</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 6 7 4 11 2 19 17</file>
+                    <file> 13 11 7 6 3 1 8</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\cpp.out</name>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 9 16 0 12 10 15</file>
                 </tool>
             </inputs>
         </file>

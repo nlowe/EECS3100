@@ -5,29 +5,37 @@
     <configuration>
         <name>Debug</name>
         <outputs>
+            <file>$PROJ_DIR$\asm.s</file>
             <file>$PROJ_DIR$\..\..\shared\iar_boot.S</file>
-            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
+            <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
             <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
             <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
-            <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
-            <file>$PROJ_DIR$\asm.s</file>
-            <file>$PROJ_DIR$\..\..\shared\iar_util.inc</file>
+            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
         </outputs>
-        <file>
-            <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 1</file>
-                </tool>
-            </outputs>
-        </file>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
+                    <file> 2</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\asm.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
                     <file> 4</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 5</file>
                 </tool>
             </outputs>
         </file>
@@ -36,18 +44,9 @@
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 2</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\asm.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
                     <file> 3</file>
                 </tool>
-            </outputs>
+            </inputs>
         </file>
     </configuration>
     <configuration>
