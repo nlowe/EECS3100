@@ -3,5 +3,8 @@ addons:
     packages:
       - gcc-arm-none-eabi
 
+git:
+  submodules: false
+
 script:
   - make
