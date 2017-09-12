@@ -1,57 +1,61 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <fileVersion>2</fileVersion>
-  <fileChecksum>1454153158</fileChecksum>
-  <configuration>
-    <name>Debug</name>
-    <outputs>
-      <file>$PROJ_DIR$\asm.s</file>
-      <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
-      <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
-      <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
-      <file>$PROJ_DIR$\..\cpp\main.cpp</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\asm.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 1</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Exe\asm.out</name>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 3 1</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 2</file>
-        </tool>
-      </outputs>
-    </file>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>Release</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
-  </configuration>
+    <fileVersion>2</fileVersion>
+    <fileChecksum>2716246485</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\..\..\shared\iar_boot.S</file>
+            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
+            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
+            <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
+            <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
+            <file>$PROJ_DIR$\asm.s</file>
+            <file>$PROJ_DIR$\..\..\shared\iar_util.inc</file>
+        </outputs>
+        <file>
+            <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 1</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 4</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\asm.out</name>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 2</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\asm.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
+    </configuration>
 </project>
-
-

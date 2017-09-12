@@ -13,3 +13,5 @@
 *.CV4
 *.STS
 [Dd]ebug/
+*.log
+
