@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\asm\ModifiedFib.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\cpp\ModifiedFib_CPP.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+
