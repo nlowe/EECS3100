@@ -40,6 +40,9 @@ Use the following registers for implementing the algorithm:
 | `Y` | `r6` | `SI` |
 | `Z` | `r7` | `DI` |
 
+### Flowchart
+![](https://docs.google.com/drawings/d/e/2PACX-1vRKbJDmbKAATGzvwWTzi3YuismFpWRw9XdEKqOBESXY6Wug-tkQW9Ad7uhmBxfu1bkQGGJkiN1DR40M/pub?w=398&h=1543)
+
 ## Building
 
 Open `hw0.eww` in IAR Embedded Workbench 8.11 or later to build the `arm` components.

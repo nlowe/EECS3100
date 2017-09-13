@@ -15,7 +15,3 @@ with `0`, `1`, `1`, ... The sequence is thus:
 
 The project is implemented in ARM and 16-bit x86 assembly. Specifically, the arm project is built on the
 IAR Embeeded Workbench platform, and the x86 project is built on the microsoft MASM assembler.
-
-### Flowchart
-
-![](https://docs.google.com/drawings/d/e/2PACX-1vRKbJDmbKAATGzvwWTzi3YuismFpWRw9XdEKqOBESXY6Wug-tkQW9Ad7uhmBxfu1bkQGGJkiN1DR40M/pub?w=398&h=1543)
