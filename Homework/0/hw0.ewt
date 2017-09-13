@@ -2314,7 +2314,7 @@
         </settings>
     </configuration>
     <file>
-        <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+        <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
     </file>
     <file>
         <name>$PROJ_DIR$\src\arm\main.S</name>

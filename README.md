@@ -1,17 +1,13 @@
-# EECS 3100 - Microsystems Design [![Build Status](https://travis-ci.org/nlowe/EECS3100.svg?branch=master)](https://travis-ci.org/nlowe/EECS3100)
+# EECS 3100 - Microsystems Design
 
 Projects and code samples for EECS 3100 - Microsystems Design for the Fall 2017 Semester
 at the University of Toledo
 
 ## Building
 
-Each project comes with a `Makefile`. To assemble, link, and create a flashable image for each project,
-simply invoke `make` in the project's directory. Invoking `make clean` should clean things up.
-
-The `shared` folder contains parts shared across all projects such as startup boiler plate and the linker
-script for the device we use in the lab. To link for a different device, alter `shared/device.ld`.
-
-You can also build and clean all projects by invoking `make` at the root of this repo.
+This class requires the use of IAR Embedded Workbench for ARM. The projects in this repository target
+version 8.11 of the IAR toolchain. To build a project, you must open the project workspace (`*.eww` files)
+in the workbench and build the project there.
 
 ## License
 

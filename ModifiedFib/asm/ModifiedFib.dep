@@ -10,7 +10,7 @@
             <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
             <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
             <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
-            <file>$PROJ_DIR$\..\..\shared\iar_boot.S</file>
+            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\asm.s</name>
@@ -31,7 +31,7 @@
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+            <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
             <outputs>
                 <tool>
                     <name>AARM</name>

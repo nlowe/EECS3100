@@ -12,7 +12,7 @@
             <file>$PROJ_DIR$\src\arm\main.S</file>
             <file>$PROJ_DIR$\Debug\Obj\main.o</file>
             <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
-            <file>$PROJ_DIR$\..\..\shared\iar_boot.S</file>
+            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\Debug\Exe\hw0.out</name>
@@ -51,7 +51,7 @@
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+            <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
             <outputs>
                 <tool>
                     <name>AARM</name>

@@ -42,15 +42,7 @@ Use the following registers for implementing the algorithm:
 
 ## Building
 
-Use `make` to build the `arm` component:
-
-```bash
-$ make
-arm-none-eabi-as -g -mcpu=cortex-m3 -mthumb --fatal-warnings -o boot.o ../shared/src/boot.S
-arm-none-eabi-as -g -mcpu=cortex-m3 -mthumb --fatal-warnings -o main.o src/main.S
-arm-none-eabi-ld -T ../shared/device.ld --fatal-warnings --no-undefined --error-unresolved-symbols --require-defined _main -o TestProject.elf boot.o  main.o
-arm-none-eabi-objcopy -O ihex -R .eeprom TestProject.elf TestProject.bin
-```
+Open `hw0.eww` in IAR Embedded Workbench 8.11 or later to build the `arm` components.
 
 Use `dos.ps1` to build the `x86` component:
 

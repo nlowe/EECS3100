@@ -2033,6 +2033,6 @@
         <name>$PROJ_DIR$\asm.s</name>
     </file>
     <file>
-        <name>$PROJ_DIR$\..\..\shared\iar_boot.S</name>
+        <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
     </file>
 </project>
