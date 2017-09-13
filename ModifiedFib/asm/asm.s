@@ -1,5 +1,6 @@
         NAME    main
         PUBLIC  main
+		EXTERN 	_halt
         SECTION .text : CODE (2)
 
         DATA
@@ -41,7 +42,5 @@ loop:
         mov     r1, r2
         mov     r2, r3
         b       loop
-        
-_halt:  B      _halt
 
         END

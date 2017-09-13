@@ -2,6 +2,7 @@
     
         PUBLIC  __iar_program_start
         PUBLIC  __vector_table
+        public _halt
         EXTERN  main
 
         SECTION .text:CODE:REORDER(1)
@@ -14,6 +15,8 @@
 __iar_program_start
         
         B       main
+        
+_halt:  B      _halt
 
         ;; Forward declaration of sections.
         SECTION CSTACK:DATA:NOROOT(3)
