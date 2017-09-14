@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>69432848</fileChecksum>
+    <fileChecksum>1521130258</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
+            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
+            <file>$PROJ_DIR$\asm.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$PROJ_DIR$\src\arm\main.S</file>
             <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
             <file>$PROJ_DIR$\Debug\Exe\hw0.out</file>
-            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
-            <file>$PROJ_DIR$\asm.s</file>
-            <file>$PROJ_DIR$\src\arm\main.S</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
             <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
-            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
+            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
         </outputs>
         <file>
-            <name>$PROJ_DIR$\Debug\Exe\hw0.out</name>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 2</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>[ROOT_NODE]</name>
+            <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
             <outputs>
                 <tool>
-                    <name>ILINK</name>
-                    <file> 1</file>
+                    <name>AARM</name>
+                    <file> 6</file>
                 </tool>
             </outputs>
         </file>
@@ -37,7 +28,7 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 0</file>
+                    <file> 4</file>
                 </tool>
             </outputs>
         </file>
@@ -46,16 +37,25 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 5</file>
+                    <file> 2</file>
                 </tool>
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
+            <name>$PROJ_DIR$\Debug\Exe\hw0.out</name>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 7</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
-                    <name>AARM</name>
-                    <file> 6</file>
+                    <name>ILINK</name>
+                    <file> 5</file>
                 </tool>
             </outputs>
         </file>
@@ -66,6 +66,9 @@
         <forcedrebuild>
             <name>[MULTI_TOOL]</name>
             <tool>ILINK</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>[REBUILD_ALL]</name>
         </forcedrebuild>
     </configuration>
 </project>

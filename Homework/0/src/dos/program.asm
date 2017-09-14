@@ -66,9 +66,6 @@ Hello   ENDP
 _FUNC_CHECK_PARITY PROC
     push bx
     mov  bx, ax
-    shr  bx, 16
-    xor  ax, bx ; ax ^= ax >> 16
-    mov  bx, ax
     shr  bx, 8
     xor  ax, bx ; ax ^= ax >> 8
     mov  bx, ax
