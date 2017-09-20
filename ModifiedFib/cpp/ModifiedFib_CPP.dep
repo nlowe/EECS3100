@@ -22,6 +22,7 @@
             <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
             <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
             <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$PROJ_DIR$\..\..\shared\device.icf</file>
             <file>$PROJ_DIR$\Debug\Obj\ModifiedFib_CPP.pbd</file>
         </outputs>
         <file>

@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>1521130258</fileChecksum>
+    <fileChecksum>3217792194</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
-            <file>$PROJ_DIR$\asm.s</file>
             <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-            <file>$PROJ_DIR$\src\arm\main.S</file>
-            <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
+            <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
             <file>$PROJ_DIR$\Debug\Exe\hw0.out</file>
             <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
-            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
+            <file>$PROJ_DIR$\asm.s</file>
+            <file>$PROJ_DIR$\src\arm\main.S</file>
+            <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
+            <file>$PROJ_DIR$\Debug\List\hw0.map</file>
+            <file>$PROJ_DIR$\..\..\shared\device.icf</file>
         </outputs>
         <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 2 7</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\hw0.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 7</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 8 3 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\asm.s</name>
             <outputs>
                 <tool>
                     <name>AARM</name>
@@ -24,38 +58,11 @@
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\asm.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 4</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
             <name>$PROJ_DIR$\src\arm\main.S</name>
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 2</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\hw0.out</name>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 7</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>[ROOT_NODE]</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 5</file>
+                    <file> 0</file>
                 </tool>
             </outputs>
         </file>

@@ -1,9 +1,10 @@
         PUBLIC main
         EXTERN _halt
-        SECTION .text : CODE (2)
+        
+        SECTION .data : DATA (2)
+var_x:  DC32 43
 
-        DATA
-var_x:    DC32 43
+        SECTION .text : CODE (2)
 
         THUMB
 main:
