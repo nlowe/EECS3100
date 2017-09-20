@@ -5,24 +5,32 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\shared\src\iar_boot.S</file>
-            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
             <file>$PROJ_DIR$\..\shared\device.icf</file>
+            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
             <file>$PROJ_DIR$\Debug\List\MemoryInit.map</file>
+            <file>$PROJ_DIR$\asm.s</file>
             <file>$PROJ_DIR$\..\shared\src\iar_data.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\iar_data.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\MemoryInit.pbd</file>
             <file>$PROJ_DIR$\Debug\Obj\iar_data.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
             <file>$PROJ_DIR$\Debug\Exe\MemoryInit.out</file>
-            <file>$PROJ_DIR$\asm.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\iar_data.o</file>
+            <file>$PROJ_DIR$\..\shared\src\iar_boot.S</file>
         </outputs>
         <file>
-            <name>$PROJ_DIR$\..\shared\src\iar_boot.S</name>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 2 7</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\asm.s</name>
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 1</file>
+                    <file> 6</file>
                 </tool>
             </outputs>
         </file>
@@ -30,12 +38,12 @@
             <name>$PROJ_DIR$\..\shared\src\iar_data.c</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
+                    <name>BICOMP</name>
                     <file> 5</file>
                 </tool>
                 <tool>
-                    <name>BICOMP</name>
-                    <file> 7</file>
+                    <name>ICCARM</name>
+                    <file> 8</file>
                 </tool>
             </outputs>
         </file>
@@ -44,31 +52,22 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 3</file>
+                    <file> 2</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 2 8 1</file>
+                    <file> 0 6 1</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\asm.s</name>
+            <name>$PROJ_DIR$\..\shared\src\iar_boot.S</name>
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 8</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>[ROOT_NODE]</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 9 3</file>
+                    <file> 1</file>
                 </tool>
             </outputs>
         </file>

@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state>Full formatting.</state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state>Full formatting.</state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -751,11 +751,11 @@
                 </option>
                 <option>
                     <name>IlinkIcfOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</state>
+                    <state>$PROJ_DIR$\..\..\shared\device.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -2031,6 +2031,9 @@
     </configuration>
     <file>
         <name>$PROJ_DIR$\asm.s</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\..\shared\device.icf</name>
     </file>
     <file>
         <name>$PROJ_DIR$\..\..\shared\src\iar_boot.S</name>

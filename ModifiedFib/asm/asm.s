@@ -1,10 +1,12 @@
         NAME    main
         PUBLIC  main
 		EXTERN 	_halt
+        
+        SECTION .data : DATA (2)
+res:    DC32 0  // Needed otherwise iar complains about not being able to init
+        DS32 24 // So use DC32 to define the first element and DS32 the rest
+        
         SECTION .text : CODE (2)
-
-        DATA
-res:    DS32 25
 
         // Reg Map:
         // * r0: a

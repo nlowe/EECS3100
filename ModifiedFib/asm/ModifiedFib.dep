@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>2613949537</fileChecksum>
+    <fileChecksum>1726831312</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
             <file>$PROJ_DIR$\asm.s</file>
             <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
             <file>$PROJ_DIR$\..\..\shared\src\iar_boot.S</file>
+            <file>$PROJ_DIR$\..\..\shared\device.icf</file>
+            <file>$PROJ_DIR$\Debug\Exe\asm.out</file>
             <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
-            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f207xG.icf</file>
         </outputs>
         <file>
-            <name>$PROJ_DIR$\Debug\Exe\asm.out</name>
-            <inputs>
+            <name>[ROOT_NODE]</name>
+            <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 5</file>
+                    <file> 4</file>
                 </tool>
-            </inputs>
+            </outputs>
         </file>
         <file>
             <name>$PROJ_DIR$\asm.s</name>
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 2</file>
+                    <file> 1</file>
                 </tool>
             </outputs>
         </file>
@@ -35,18 +35,18 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 4</file>
+                    <file> 5</file>
                 </tool>
             </outputs>
         </file>
         <file>
-            <name>[ROOT_NODE]</name>
-            <outputs>
+            <name>$PROJ_DIR$\Debug\Exe\asm.out</name>
+            <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 0</file>
+                    <file> 3 1 5</file>
                 </tool>
-            </outputs>
+            </inputs>
         </file>
     </configuration>
     <configuration>
