@@ -109,8 +109,6 @@ flash:
         
         b       flash
         
-        b       _halt
-        
         /*
          * Turns on the specified LED on the board
          * Inputs: r2: the pin of the LED
@@ -188,6 +186,7 @@ __func_wait_tim2__sleep:
         bl      FUNC_USER_BTN_PRESSED
         pop     {lr}
         beq     __func_wait_tim2_sleep_real
+        pop     {r0, r1}
         b       party
 
 __func_wait_tim2_sleep_real:
@@ -203,11 +202,11 @@ __func_wait_tim2_sleep_real:
          * Outputs: Compare Flags
          */
 FUNC_USER_BTN_PRESSED:
-        push    {r0}
+        push    {r0, r1}
         ldr     r0, =GPIOG_IDR
         ldr     r1, [r0]
         tst     r1, #(1<<6)
-        pop     {r0}
+        pop     {r0, r1}
         mov     pc, lr
         
         END
