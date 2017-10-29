@@ -7,15 +7,13 @@ STAT_PORT EQU GPIOF_ODR
 
 USER_PORT EQU GPIOG_IDR
 
-LE        EQU 0  // B_0
-LE_PORT   EQU GPIOB_ODR
+LE        EQU 0  // G_0
+LE_PORT   EQU GPIOG_ODR
 
 // Switches in E0-E7
-SW_MASK   EQU 0xff
 SW_PORT   EQU GPIOE_IDR
 
 // Bar LEDs in E8-E15
-BAR_MASK  EQU 0xff << 8
 BAR_PORT  EQU GPIOE_ODR
 
         NAME    main
@@ -28,7 +26,7 @@ BAR_PORT  EQU GPIOE_ODR
         // Enable ports B, E, F, and G
 main:   ldr     r0, =RCC_AHB1ENR
         ldr     r1, [r0]
-        orr     r1, r1, #(1 << 1 | 1 << 4 | 1<<5 | 1<<6)
+        orr     r1, r1, #(1 << 4 | 1<<5 | 1<<6)
         str     r1, [r0]
         
         // Set G6 to discrete input (USER)
@@ -37,8 +35,8 @@ main:   ldr     r0, =RCC_AHB1ENR
         bic     r1, r1, #(0x3 << 12)
         str     r1, [r0]
         
-        // Set B0 to discrete input (USER)
-        ldr     r0, =GPIOB_MODER
+        // Set G0 to discrete input (USER)
+        ldr     r0, =GPIOG_MODER
         ldr     r1, [r0]
         bic     r1, r1, #0x3
         str     r1, [r0]
@@ -55,6 +53,10 @@ main:   ldr     r0, =RCC_AHB1ENR
         mov     r1, #(0x55 << 16)
         orr     r1, r1, #(0x55 << 24)
         str     r1, [r0]
+        
+        // Turn off BAR lights
+        mov     r1, #(0xff << 8)
+        bl      FUNC_WRITE_BAR
 
         // Enable TIM2
         ldr     r0, =RCC_APB1ENR
@@ -77,7 +79,7 @@ wait_for_btn:
         bne     wait_for_btn
         
         // When the button is pressed, latch in switches
-        bl      FUNC_LATCH_SW
+        bl      FUNC_LATCH_ENABLE
         bl      FUNC_USER_BTN_PRESSED
         bne     party
         
@@ -88,13 +90,14 @@ wait_for_btn:
         
         // If after 2 seconds the button is still held
         // Read from the latch
+        bl      FUNC_LATCH_DISABLE
         bl      FUNC_READ_SW
         
-        ldr     r2, =SW_MASK
-        cmp     r1, r2
+        cmp     r1, #0xff
         beq     sw_all_on
         mvn     r1, r1
-        cmp     r1, r2
+        and     r1, r1, #0xff
+        cmp     r1, #0xff
         beq     sw_all_off
         // mixed, the off-by-one is implemented in-hardware
         lsl     r1, r1, #8
@@ -109,7 +112,7 @@ wait_for_btn:
 sw_all_on:
         ldr     r2, =STAT1
         bl      FUNC_STAT_ON
-        mov     r1, #(0x55 << 8)
+        mov     r1, #(0x55 << 9)
         bl      FUNC_WRITE_BAR
         mov     r2, #500
         bl      FUNC_WAIT_TIM2
@@ -117,7 +120,7 @@ sw_all_on:
         bne     party
         ldr     r2, =STAT1
         bl      FUNC_STAT_OFF
-        mov     r1, #(0x55 << 7)
+        mov     r1, #(0x55 << 8)
         bl      FUNC_WRITE_BAR
         mov     r2, #500
         bl      FUNC_WAIT_TIM2
@@ -131,6 +134,8 @@ sw_all_on:
         // * STAT1 off
         // * wait 500ms
 sw_all_off
+        mov     r1, #(0xff << 8)
+        bl      FUNC_WRITE_BAR
         ldr     r2, =STAT1
         bl      FUNC_STAT_ON
         mov     r2, #500
@@ -159,11 +164,35 @@ FUNC_LATCH_SW:
         lsl     r3, r3, r2
         orr     r1, r1, r3
         str     r1, [r0]
-        mov     r2, #5
+        mov     r2, #50
         bl      FUNC_WAIT_TIM2
         bic     r1, r1, r3
         str     r1, [r0]
         pop     {r0, r1, r2, r3, lr}
+        mov     pc, lr
+        
+FUNC_LATCH_ENABLE:
+        push    {r0, r1, r2, r3}
+        ldr     r0, =LE_PORT
+        ldr     r1, [r0]
+        ldr     r2, =LE
+        mov     r3, #1
+        lsl     r3, r3, r2
+        orr     r1, r1, r3
+        str     r1, [r0]
+        pop     {r0, r1, r2, r3}
+        mov     pc, lr
+        
+FUNC_LATCH_DISABLE:
+        push    {r0, r1, r2, r3}
+        ldr     r0, =LE_PORT
+        ldr     r1, [r0]
+        ldr     r2, =LE
+        mov     r3, #1
+        lsl     r3, r3, r2
+        bic     r1, r1, r3
+        str     r1, [r0]
+        pop     {r0, r1, r2, r3}
         mov     pc, lr
 
         /*
@@ -173,9 +202,10 @@ FUNC_LATCH_SW:
          */
 FUNC_READ_SW:
         push    {r0, r2, r3}
-        ldr     r0, =SW_PORT
+        ldr     r0, =GPIOE_IDR
         ldr     r1, [r0]
-        ldr     r2, =SW_MASK
+        mov     r2, #0xFF
+        mvn     r1, r1
         and     r1, r1, r2
         pop     {r0, r2, r3}
         mov     pc, lr
