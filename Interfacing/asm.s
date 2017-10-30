@@ -23,7 +23,7 @@ BAR_PORT  EQU GPIOE_ODR
         SECTION .text : CODE (2)
 
         THUMB
-        // Enable ports B, E, F, and G
+        // Enable ports E, F, and G
 main:   ldr     r0, =RCC_AHB1ENR
         ldr     r1, [r0]
         orr     r1, r1, #(1 << 4 | 1<<5 | 1<<6)
@@ -33,11 +33,6 @@ main:   ldr     r0, =RCC_AHB1ENR
         ldr     r0, =GPIOG_MODER
         ldr     r1, [r0]
         bic     r1, r1, #(0x3 << 12)
-        str     r1, [r0]
-        
-        // Set G0 to discrete input (USER)
-        ldr     r0, =GPIOG_MODER
-        ldr     r1, [r0]
         bic     r1, r1, #0x3
         str     r1, [r0]
         
@@ -53,10 +48,6 @@ main:   ldr     r0, =RCC_AHB1ENR
         mov     r1, #(0x55 << 16)
         orr     r1, r1, #(0x55 << 24)
         str     r1, [r0]
-        
-        // Turn off BAR lights
-        mov     r1, #(0xff << 8)
-        bl      FUNC_WRITE_BAR
 
         // Enable TIM2
         ldr     r0, =RCC_APB1ENR
@@ -71,6 +62,10 @@ main:   ldr     r0, =RCC_AHB1ENR
         mov     r1, #16000
         str     r1, [r0]
 
+_real_party:
+        // Turn off BAR lights
+        mov     r1, #(0xff << 8)
+        bl      FUNC_WRITE_BAR
 party:
         bl      FUNC_STAT_ALL_OFF
         eor     r7, r7, r7
@@ -79,18 +74,15 @@ wait_for_btn:
         bne     wait_for_btn
         
         // When the button is pressed, latch in switches
-        bl      FUNC_LATCH_ENABLE
-        bl      FUNC_USER_BTN_PRESSED
-        bne     party
+        bl      FUNC_LATCH_SW
         
         mov     r7, #1
-        mov     r2, #2000
+        mov     r2, #1995
         bl      FUNC_WAIT_TIM2
         bne     party
         
         // If after 2 seconds the button is still held
         // Read from the latch
-        bl      FUNC_LATCH_DISABLE
         bl      FUNC_READ_SW
         
         cmp     r1, #0xff
@@ -117,7 +109,7 @@ sw_all_on:
         mov     r2, #500
         bl      FUNC_WAIT_TIM2
         bl      FUNC_USER_BTN_PRESSED
-        bne     party
+        bne     _real_party
         ldr     r2, =STAT1
         bl      FUNC_STAT_OFF
         mov     r1, #(0x55 << 8)
@@ -125,7 +117,7 @@ sw_all_on:
         mov     r2, #500
         bl      FUNC_WAIT_TIM2
         bl      FUNC_USER_BTN_PRESSED
-        bne     party
+        bne     _real_party
         b       sw_all_on
 
         // Until USER pressed
@@ -164,35 +156,11 @@ FUNC_LATCH_SW:
         lsl     r3, r3, r2
         orr     r1, r1, r3
         str     r1, [r0]
-        mov     r2, #50
+        mov     r2, #5
         bl      FUNC_WAIT_TIM2
         bic     r1, r1, r3
         str     r1, [r0]
         pop     {r0, r1, r2, r3, lr}
-        mov     pc, lr
-        
-FUNC_LATCH_ENABLE:
-        push    {r0, r1, r2, r3}
-        ldr     r0, =LE_PORT
-        ldr     r1, [r0]
-        ldr     r2, =LE
-        mov     r3, #1
-        lsl     r3, r3, r2
-        orr     r1, r1, r3
-        str     r1, [r0]
-        pop     {r0, r1, r2, r3}
-        mov     pc, lr
-        
-FUNC_LATCH_DISABLE:
-        push    {r0, r1, r2, r3}
-        ldr     r0, =LE_PORT
-        ldr     r1, [r0]
-        ldr     r2, =LE
-        mov     r3, #1
-        lsl     r3, r3, r2
-        bic     r1, r1, r3
-        str     r1, [r0]
-        pop     {r0, r1, r2, r3}
         mov     pc, lr
 
         /*
@@ -271,14 +239,14 @@ FUNC_STAT_ALL_OFF:
         /*
          * Waits until TIM2 has counted the specified number of iterations
          * The timer is reset and started before blocking
-         * If r7=1 and the user button is released, the function returns early
+         * If the user button is released, the function returns early
          *
          * Inputs: r2: the number of iterations to wait
          * Outputs: None
          */
 FUNC_WAIT_TIM2:
         // Reset TIM2
-        push    {r0, r1}
+        push    {r0, r1, lr}
         ldr     r0, =TIM2_EGR
         ldr     r1, [r0]
         orr     r1, r1, #1
@@ -291,22 +259,17 @@ FUNC_WAIT_TIM2:
         ldr     r0, =TIM2_CNT
 __func_wait_tim2__sleep:
 
-        // If the flag in r7 is set, also break out of the sleep if
-        // the button was released
-        cmp     r7, #1
-        bne     __func_wait_tim2_sleep_real
-        push    {lr}
+        // Break out of the sleep if the button was released
         bl      FUNC_USER_BTN_PRESSED
-        pop     {lr}
         beq     __func_wait_tim2_sleep_real
-        pop     {r0, r1}
-        b       party
+        pop     {r0, r1, lr}
+        mov     pc, lr
 
 __func_wait_tim2_sleep_real:
         ldr     r1, [r0]
         cmp     r1, r2
         blt     __func_wait_tim2__sleep
-        pop     {r0, r1}
+        pop     {r0, r1, lr}
         mov     pc, lr
         
         /*
