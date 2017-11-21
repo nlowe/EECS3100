@@ -24,15 +24,26 @@ __iar_program_start:
         ldr     r1,  =SFB(.data)
         eor     r6, r6, r6
         ldr     r7, =SIZEOF(.data_init)
-        lsr     r7, r7, #4 // 4 words at a time
-        add     r7, r7, #1 // Worst case: We need one extra copy
-__init_data:        
+__init_data:
+        sub     r8, r7, r6
+        cmp     r8, #16
+        blt     __init_data_small // less than 4 words left?
         ldmia   r0!, {r2-r5}
         stmia   r1!, {r2-r5}
-        add     r6, r6, #1
+        add     r6, r6, #16
         cmp     r6, r7
         blt     __init_data
         
+__init_data_small: // copy the remaining bytes one byte at a time
+        cmp     r6, r7
+        beq     __init_done
+        ldrb    r2, [r0], #1
+        strb    r2, [r1], #1
+        add     r6, r6, #1
+        b       __init_data_small
+        
+        
+__init_done:
         // Zero registers
         eor     r1, r1, r1
         eor     r2, r2, r2
@@ -41,6 +52,7 @@ __init_data:
         eor     r5, r5, r5
         eor     r6, r6, r6
         eor     r7, r7, r7
+        eor     r8, r8, r8
         
         // Go do the thing
         B       main
