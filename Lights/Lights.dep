@@ -5,14 +5,14 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
             <file>$PROJ_DIR$\asm.s</file>
-            <file>$TOOLKIT_DIR$\inc\asm\io_macros.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\asm.o</file>
             <file>$PROJ_DIR$\..\shared\device.icf</file>
-            <file>$PROJ_DIR$\..\shared\src\iar_boot.S</file>
             <file>$PROJ_DIR$\Debug\List\Lights.map</file>
+            <file>$TOOLKIT_DIR$\inc\asm\io_macros.h</file>
             <file>$PROJ_DIR$\Debug\Exe\Lights.out</file>
+            <file>$PROJ_DIR$\..\shared\src\iar_boot.S</file>
+            <file>$PROJ_DIR$\Debug\Obj\iar_boot.o</file>
             <file>$TOOLKIT_DIR$\inc\ST\iostm32f207zx.h</file>
         </outputs>
         <file>
@@ -20,7 +20,7 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 6 7</file>
+                    <file> 5 3</file>
                 </tool>
             </outputs>
         </file>
@@ -29,13 +29,28 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 0</file>
+                    <file> 1</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 8 3</file>
+                    <file> 8 4</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\Lights.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 2 1 7</file>
                 </tool>
             </inputs>
         </file>
@@ -44,24 +59,9 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 1</file>
+                    <file> 7</file>
                 </tool>
             </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\Lights.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 6</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 4 0 1</file>
-                </tool>
-            </inputs>
         </file>
     </configuration>
     <configuration>
