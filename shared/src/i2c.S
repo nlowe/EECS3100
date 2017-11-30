@@ -2,6 +2,8 @@
         NAME    I2C
         PUBLIC  I2C_Init
         PUBLIC  I2C_DeInit
+        PUBLIC  I2C_Write
+        PUBLIC  I2C_Read
         
         SECTION .i2c_data : CONST (2)
 APBAHBPrescTable:
@@ -14,6 +16,167 @@ HSI_VALUE:
 
         SECTION .i2c : CODE(2)
         THUMB
+        
+I2C_RW_Setup:
+        push    {r0-r4, lr}
+        
+        // Enable ACK & Start
+        ldr     r3, =I2C1_CR1
+        ldr     r4, [r3]
+        orr     r4, r4, #(1 << 10 | 1 << 8)
+        str     r4, [r3]
+        
+        // Enable START
+        //orr     r4, r4, #(1 << 8)
+        //str     r4, [r3]
+
+        // Wait for START to be generated
+        ldr     r3, =I2C1_SR1
+__wait_sb:
+        ldr     r4, [r3]
+        tst     r4, #1
+        beq     __wait_sb
+        
+        // Send address
+        ldr     r3, =I2C1_DR
+        strb    r0, [r3]
+        
+        // Wait for address to be sent (ADDR || (!ADDR && TxE))
+        ldr     r3, =I2C1_SR1
+__wait_addr:
+        ldr     r4, [r3]
+        tst     r4, #(1 << 1)
+        bne     __addr_sent
+        tst     r4, #(1 << 7)
+        beq     __wait_addr     // We might miss ADDR so also check TxE
+        
+__addr_sent:
+        // If we're receiving one byte, disable ACK
+        cmp     r2, #1
+        bne     __clear_addr
+        tst     r0, #1
+        beq     __clear_addr
+        ldr     r3, =I2C1_CR1
+        ldr     r4, [r3]
+        bic     r4, r4, #(1 << 10)
+        str     r4, [r3]
+        
+__clear_addr:
+        // Read SR2 to clear ADDR
+        ldr     r3, =I2C1_SR2
+        ldr     r4, [r3]
+
+        // If we're receiving one byte, generate STOP
+        cmp     r2, #1
+        bne     __i2c_rw_done
+        tst     r0, #1
+        beq     __i2c_rw_done
+        ldr     r3, =I2C1_CR1
+        ldr     r4, [r3]
+        orr     r4, r4, #(1 << 9)
+        str     r4, [r3]
+
+__i2c_rw_done:
+        pop     {r0-r4, lr}
+        mov     pc, lr
+        
+        /**
+         * Write to I2C
+         * Inputs: r0: I2C slave address
+         *         r1: pointer to data buffer
+         *         r2: number of bytes to write
+         * Outputs: none
+         */
+I2C_Write:
+        push    {r0-r8, lr}
+        cmp     r2, #0
+        beq     __i2c_write_done
+        
+        bic     r0, r0, #1  // Ensure LSB Reset
+        
+        eor     r4, r4, r4
+        
+        // Generate ACK & START and send address
+        bl      I2C_RW_Setup
+
+        ldr     r3, =I2C1_DR
+__i2c_write_data:
+        cmp     r2, #0
+        beq     __i2c_write_done
+        // Move a byte into I2C1_DR
+        ldrb    r0, [r1], #1
+        strb    r0, [r3]
+        // If last byte, set STOP bit
+        sub     r2, r2, #1
+        cmp     r2, #0
+        bne     __i2c_write_wait_tx
+        ldr     r0, =I2C1_CR1
+        ldr     r1, [r0]
+        orr     r1, r1, #(1 << 9)
+        str     r1, [r0]
+__i2c_write_wait_tx:
+        // wait for byte to be transmitted
+        ldr     r4, =I2C1_SR1
+        ldr     r5, [r4]
+        tst     r5, #(1 << 7)
+        bne     __i2c_write_data
+        tst     r5, #1
+        // The bus might close before we can check TxE
+        // Check to see if START is no longer being generated
+        bne     __i2c_write_data
+        
+__i2c_write_done:
+        pop     {r0-r8, lr}
+        mov     pc, lr
+        
+        /**
+         * Read from I2C
+         * Inputs: r0: I2C slave address
+         *         r1: pointer to data bufer
+         *         r2: number of bytes to read
+         * Outputs: none. Buffer pointed at by r1 is
+         *   populated from data on the i2c bus
+         */
+I2C_Read:
+        push    {r0-r8, lr}
+        cmp     r2, #0
+        beq     __i2c_read_done
+        
+        orr     r0, r0, #1  // Ensure LSB Set
+        
+        // Generate ACK & START and send address
+        bl      I2C_RW_Setup
+        
+        // Wait for byte to be received
+        ldr     r3, =I2C1_DR
+__i2c_read_wait_rx:
+        ldr     r4, =I2C1_SR1
+        ldr     r5, [r4]
+        tst     r5, #(1 << 6)
+        beq     __i2c_read_wait_rx
+        
+        // If this is the last byte, disable ACK and generate STOP
+        sub     r2, r2, #1
+        cmp     r2, #1
+        bne     __i2c_read_data
+        ldr     r4, =I2C1_CR1
+        ldr     r5, [r4]
+        bic     r5, r5, #(1 << 10)
+        orr     r5, r5, #(1 << 9)
+        str     r5, [r4]
+        
+        // Read the data
+__i2c_read_data:
+        ldrb    r4, [r3]
+        strb    r4, [r1], #1
+        
+        cmp     r2, #0
+        beq     __i2c_read_done
+        b       __i2c_read_wait_rx
+        
+__i2c_read_done:
+        pop     {r0-r8, lr}
+        mov     pc, lr
         
 // According to the manual, here's what we need to do:
 // Setup:
@@ -110,6 +273,12 @@ __I2C_Init_GPIO_Init:
         bic     r1, r1, #(0xA << 11)
         str     r1, [r0]
         
+        // B6 and B7 to open-drain mode?
+        ldr     r0, =GPIOB_OTYPER
+        ldr     r1, [r0]
+        orr     r1, r1, #(0x3 << 6)
+        str     r1, [r0]
+
         pop     {r0-r1, lr}
         mov     pc, lr
 

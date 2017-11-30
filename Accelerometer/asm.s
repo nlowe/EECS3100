@@ -1,12 +1,13 @@
 #include <st/iostm32f207zx.h>
 #include <lcd.h>
+#include <i2c.h>
 LED1    EQU 6
 LED2    EQU 7
 LED3    EQU 8
 LED4    EQU 9
 
 
-ACCEL_ADDR   EQU 0x1c
+ACCEL_ADDR   EQU 0x3A
 // Taken from datasheet on page 28
 ACCEL_WHOAMI EQU 0x0f
 
@@ -25,7 +26,6 @@ ACCEL_OUTZ_H EQU 0x2D
         PUBLIC  main
 		EXTERN 	_halt
         EXTERN  FONT_13
-        EXTERN  I2C_Init
         
         SECTION .data : DATA (2)
 nib_itoa:
@@ -49,11 +49,14 @@ nib_itoa:
 strbuff:
         DC8     '0'
         DS8     15
+        
+i2cbuff:
+        DS8     2
 
         SECTION .text : CODE (2)
 
         THUMB
-        // Enable ports B, F and G
+        // Enable ports F and G
 main:   ldr     r0, =RCC_AHB1ENR
         ldr     r1, [r0]
         orr     r1, r1, #(1<<6 | 1<<5)
@@ -63,6 +66,19 @@ main:   ldr     r0, =RCC_AHB1ENR
         ldr     r0, =GPIOG_MODER
         ldr     r1, [r0]
         bic     r1, r1, #(0x3 << 12)
+        str     r1, [r0]
+        
+        // Set F10 to discrete input
+        ldr     r0, =GPIOF_MODER
+        ldr     r1, [r0]
+        bic     r1, r1, #(0x3 << 20)
+        str     r1, [r0]
+        
+        // Set F10 to 50MHz speed
+        ldr     r0, =GPIOF_OSPEEDR
+        ldr     r1, [r0]
+        orr     r1, r1, #(0x2 << 20)
+        bic     r1, r1, #(0x1 << 20)
         str     r1, [r0]
 
         // Enable TIM2
@@ -83,19 +99,14 @@ main:   ldr     r0, =RCC_AHB1ENR
         ldr     r0, =BLACK
         bl      LCD_Clear
         
-        // Tell the accelerometer to power up
+        // Test i2c
         ldr     r0, =ACCEL_ADDR
-        orr     r0, r0, #1     // write
-        ldr     r1, =ACCEL_CR1 // offset reg
-        mov     r2, #(3 << 6)  // value
-        bl      FUNC_i2c_WRITE
-        
-        // Tell the accelerometer to use a +/- 6g scale
-        ldr     r0, =ACCEL_ADDR
-        orr     r0, r0, #1     // write
-        ldr     r1, =ACCEL_CR2 // offset reg
-        mov     r2, #(1 << 7)  // value
-        bl      FUNC_i2c_WRITE
+        ldr     r1, =i2cbuff
+        ldr     r2, =ACCEL_WHOAMI
+        strb    r2, [r1]
+        mov     r2, #1
+        bl      I2C_Write
+        bl      I2C_Read
         
 party:
         // Test i2c

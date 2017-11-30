@@ -2323,6 +2323,9 @@
         <name>$PROJ_DIR$\..\shared\src\font13.s</name>
     </file>
     <file>
+        <name>$PROJ_DIR$\..\shared\src\i2c.h</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\..\shared\src\i2c.S</name>
     </file>
     <file>
