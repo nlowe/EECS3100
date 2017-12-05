@@ -58,7 +58,7 @@ Accel_Init:
          *          r2: Z acceleration
          */
 Accel_Read:
-        push    {lr}
+        push    {r4, lr}
         
         ldr     r0, =ACCEL_ADDR
         ldr     r1, =i2cbuff
@@ -72,11 +72,12 @@ Accel_Read:
         bl      I2C_Read
         
         // Each axis returns a signed half-word
-        ldrsh   r1, [r1, #2]
-        ldrsh   r2, [r1, #4]
-        ldrsh   r0, [r1, #0]
+        mov     r4, r1
+        ldrsh   r2, [r4, #4]
+        ldrsh   r1, [r4, #2]
+        ldrsh   r0, [r4, #0]
         
-        pop     {lr}
+        pop     {r4, lr}
         mov     pc, lr
         
         

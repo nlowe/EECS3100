@@ -75,7 +75,7 @@ party:
         ldr     r0, =GPIOF_IDR
         ldr     r1, [r0]
         tst     r1, #(1 << 10)
-        beq     party
+        //beq     party
         
         bl      Accel_Read
         mov     r7, r1      // Save Y
