@@ -2030,6 +2030,15 @@
         </settings>
     </configuration>
     <file>
+        <name>$PROJ_DIR$\accelerometer.h</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\accelerometer.S</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\accelerometer_regs.h</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\asm.s</name>
     </file>
     <file>
@@ -2043,6 +2052,9 @@
     </file>
     <file>
         <name>$PROJ_DIR$\..\shared\src\i2c.S</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\shared\src\i2c_private.h</name>
     </file>
     <file>
         <name>$PROJ_DIR$\..\shared\src\iar_boot.S</name>

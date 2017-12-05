@@ -1,26 +1,11 @@
 #include <st/iostm32f207zx.h>
 #include <lcd.h>
 #include <i2c.h>
+#include <accelerometer.h>
 LED1    EQU 6
 LED2    EQU 7
 LED3    EQU 8
 LED4    EQU 9
-
-
-ACCEL_ADDR   EQU 0x3A
-// Taken from datasheet on page 28
-ACCEL_WHOAMI EQU 0x0f
-
-ACCEL_CR1    EQU 0x20
-ACCEL_CR2    EQU 0x21
-ACCEL_CR3    EQU 0x22
-
-ACCEL_OUTX_L EQU 0x28
-ACCEL_OUTX_H EQU 0x29
-ACCEL_OUTY_L EQU 0x2A
-ACCEL_OUTY_H EQU 0x2B
-ACCEL_OUTZ_L EQU 0x2C
-ACCEL_OUTZ_H EQU 0x2D
 
         NAME    main
         PUBLIC  main
@@ -29,29 +14,12 @@ ACCEL_OUTZ_H EQU 0x2D
         
         SECTION .data : DATA (2)
 nib_itoa:
-        DC8     '0'
-        DC8     '1'
-        DC8     '2'
-        DC8     '3'
-        DC8     '4'
-        DC8     '5'
-        DC8     '6'
-        DC8     '7'
-        DC8     '8'
-        DC8     '9'
-        DC8     'A'
-        DC8     'B'
-        DC8     'C'
-        DC8     'D'
-        DC8     'E'
-        DC8     'F'
+        DC8     '0', '1', '2', '3', '4', '5', '6', '7'
+        DC8     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 
 strbuff:
-        DC8     '0'
-        DS8     15
-        
-i2cbuff:
-        DS8     2
+        DC8     '_', ' ', 'A', 'C', 'C', 'E', 'L', '='
+        DC8     ' ', '0', 'x', ' ', ' ', ' ', ' '
 
         SECTION .text : CODE (2)
 
@@ -68,6 +36,7 @@ main:   ldr     r0, =RCC_AHB1ENR
         bic     r1, r1, #(0x3 << 12)
         str     r1, [r0]
         
+        // F10 used for ACCEL DRDY signal
         // Set F10 to discrete input
         ldr     r0, =GPIOF_MODER
         ldr     r1, [r0]
@@ -99,137 +68,109 @@ main:   ldr     r0, =RCC_AHB1ENR
         ldr     r0, =BLACK
         bl      LCD_Clear
         
-        // Test i2c
-        ldr     r0, =ACCEL_ADDR
-        ldr     r1, =i2cbuff
-        ldr     r2, =ACCEL_WHOAMI
-        strb    r2, [r1]
-        mov     r2, #1
-        bl      I2C_Write
-        bl      I2C_Read
+        bl      Accel_Init
         
 party:
-        // Test i2c
-        ldr     r0, =ACCEL_ADDR
-        ldr     r1, =ACCEL_WHOAMI
-        bl      FUNC_i2c_READ
+        // Wait for accelerometer data to be ready
+        ldr     r0, =GPIOF_IDR
+        ldr     r1, [r0]
+        tst     r1, #(1 << 10)
+        beq     party
         
+        bl      Accel_Read
+        mov     r7, r1      // Save Y
+        mov     r8, r2      // Save Z
+        
+        ldr     r5, =strbuff
+        mov     r4, #'X'
+        strb    r4, [r5, #0]
+        
+        mov     r6, r0
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #24
+        mov     r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #16
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #8
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        orr     r3, r3, r2
+        str     r3, [r5, #11]
+        
+        mov     r0, #5
+        mov     r1, #15
+        ldr     r2, =WHITE
+        ldr     r3, =BLACK
+        ldr     r4, =FONT_13
+        bl      LCD_WriteString
+        
+        ldr     r5, =strbuff
+        mov     r4, #'Y'
+        strb    r4, [r5, #0]
+        
+        mov     r6, r7
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #24
+        mov     r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #16
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #8
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        orr     r3, r3, r2
+        str     r3, [r5, #11]
+        
+        mov     r0, #5
+        mov     r1, #30
+        ldr     r2, =WHITE
+        ldr     r3, =BLACK
+        ldr     r4, =FONT_13
+        bl      LCD_WriteString
+        
+        ldr     r5, =strbuff
+        mov     r4, #'Z'
+        strb    r4, [r5, #0]
+        
+        mov     r6, r8
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #24
+        mov     r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #16
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        lsl     r2, r2, #8
+        orr     r3, r3, r2
+        lsr     r6, r6, #4
+        bl      FUNC_NIB_ITOA
+        orr     r3, r3, r2
+        str     r3, [r5, #11]
+        
+        mov     r0, #5
+        mov     r1, #45
+        ldr     r2, =WHITE
+        ldr     r3, =BLACK
+        ldr     r4, =FONT_13
+        bl      LCD_WriteString
+        
+        mov     r2, #100
+        bl      FUNC_WAIT_TIM2
         
         b party
         
-FUNC_WRITE_ACCEL:
-        push    {lr}
-        
-        pop     {lr}
-        mov     pc, lr
-        
-        /*
-         * Write a byte to the device on the i2c bus
-         * Inputs: r0: bus address
-         *         r1: device reg
-         *         r2: byte to write
-         *
-         * Outputs: None
-         */
-FUNC_i2c_WRITE:
-        push    {r3, r4, lr}
-        push    {r2}
-        // Set START bit
-        ldr     r3, =I2C1_CR1
-        ldr     r4, [r3]
-        orr     r4, r4, #(1 << 8)
-        // busy?
-        str     r4, [r3]
-        
-        // SR1?
-        ldr     r3, =I2C1_SR1
-__func_i2c_write_wait_start:
-        ldr     r4, [r3]
-        tst     r4, #1
-        beq     __func_i2c_write_wait_start
-        
-        // Write slave address
-        ldr     r3, =I2C1_DR
-        strb    r0, [r3]
-        
-        // SR1?
-        ldr     r3, =I2C1_SR1
-__func_i2c_write_wait_addr:
-        ldr     r4, [r3]
-        tst     r4, #(1 << 7)
-        beq     __func_i2c_write_wait_addr
-        // read SR2 to clear ADDR
-        ldr     r3, =I2C1_SR2
-        ldr     r4, [r3]
-        
-        // Write device reg
-        ldr     r3, =I2C1_DR
-        strb    r1, [r3]
-        
-        ldr     r3, =I2C1_SR1
-__func_i2c_write_wait_reg:
-        ldr     r4, [r3]
-        tst     r4, #(1 << 7)
-        beq     __func_i2c_write_wait_reg
-        
-        // Write payload
-        pop     {r2}
-        strb    r2, [r3]
-        
-        // generate STOP bit
-        ldr     r3, =I2C1_CR1
-        ldr     r4, [r3]
-        orr     r4, r4, #(1 << 9)
-        str     r4, [r3]
-        
-__func_i2c_write_wait_eot:
-        ldr     r4, [r3]
-        tst     r4, #(1 << 7)
-        beq     __func_i2c_write_wait_eot
-        
-        pop     {r3, r4, lr}
-        mov     pc, lr
 
-        /*
-         * Read a byte from the device on the i2c bus
-         * Inputs: r0: bus address
-         *         r1: device reg
-         *
-         * Outputs: r2: byte read from the bus
-         */
-FUNC_i2c_READ:
-        push    {r3, lr}
-        // Set START bit
-        ldr     r3, =I2C1_CR1
-        ldr     r4, [r3]
-        orr     r4, r4, #(1 << 8)
-        // busy?
-        str     r4, [r3]
-        
-        // SR1?
-        ldr     r3, =I2C1_SR1
-        ldr     r4, [r3]
-        
-        // Write slave address
-        ldr     r3, =I2C1_DR
-        strb    r0, [r3]
-        
-        // SR1?
-        ldr     r3, =I2C1_SR1
-        ldr     r4, [r3]
-        // SR2?
-        ldr     r3, =I2C1_SR2
-        ldr     r4, [r3]
-        // clear ADDR?
-        
-        // Write device reg
-        ldr     r3, =I2C1_DR
-        strb    r1, [r3]
-        
-        // Write NACK to close communication
-        ldr     r3, =I2C1_CR1
-        pop     {r3, lr}
-        mov     pc, lr
 
         /*
          * Computes r6 % 10
@@ -256,7 +197,7 @@ __func_divmod_end:
         mov     pc, lr
 
         /*
-         * Converts the low nibble in r0 to ascii
+         * Converts the low nibble in r6 to ascii
          * Inputs: r6 bits 0-3: the nibble to convert
          * Outputs: r2: the ascii char value
          */

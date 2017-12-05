@@ -5,6 +5,8 @@
         PUBLIC  _halt
         EXTERN  main
         EXTERN  __stack
+        EXTERN  __i2c1_ev
+        EXTERN  __i2c1_er
         
         // SFE and SFB need segment definitions in the same object
         // Declare data and init table here as well
@@ -82,6 +84,17 @@ __vector_table
         DCD     0
         DCD     PendSV_Handler
         DCD     SysTick_Handler
+        
+        REPT    31
+        DCD     NOP_Handler // I don't want any other interrupts please
+        ENDR
+        
+        DCD     I2C1_EV_IRQHandler
+        DCD     I2C1_ER_IRQHandler
+        
+        REPT    48
+        DCD     NOP_Handler
+        ENDR
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -100,6 +113,19 @@ __vector_table
 
         SECTION .text:CODE:REORDER:NOROOT(1)
         THUMB
+        
+NOP_Handler
+        mov     pc, lr
+        
+I2C1_EV_IRQHandler
+        push    {lr}
+        bl      __i2c1_ev
+        pop     {pc}
+
+I2C1_ER_IRQHandler
+        push    {lr}
+        bl      __i2c1_er
+        pop     {pc}
 
 NMI_Handler
 HardFault_Handler
